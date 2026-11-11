@@ -1,9 +1,12 @@
 import express, { type Request, type Response} from "express";
+import cors from 'cors';
 import { chromium } from 'playwright';
 
 const browser = await chromium.launch();
 const app = express();
 const port = process.env["PORT"] ?? 4182;
+
+app.use(cors());
 
 const screenshot = async (url: string, width: number, height: number) => {
     const page = await browser.newPage({
@@ -23,6 +26,11 @@ app.get('/screenshot', (req: Request, res: Response) => {
         screenshot(url as string, Number(width), Number(height)).then((buffer) => {
             res.set('Content-Type', 'image/png');
             res.send(buffer)
+        }).catch((e) => {
+            if (e instanceof Error) {
+                console.log(e.message);
+            }
+            res.status(404).send('Not found');
         })
     } else {
         res.status(400).json({ error: 'Missing url query parameter' })
