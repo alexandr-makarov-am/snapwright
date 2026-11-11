@@ -1,0 +1,7 @@
+services:
+  snapwright:
+    restart: always
+    build:
+      context: .
+    ports:
+      - '4182:4182'

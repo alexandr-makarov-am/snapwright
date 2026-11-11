@@ -3,9 +3,7 @@ import { chromium } from 'playwright';
 
 const browser = await chromium.launch();
 const app = express();
-const port = process.env["PORT"] ?? 3000;
-
-console.log(process.env["PORT"])
+const port = process.env["PORT"] ?? 4182;
 
 const screenshot = async (url: string, width: number, height: number) => {
     const page = await browser.newPage({
@@ -36,5 +34,5 @@ app.all('/{*splat}', (_, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`App listening on port ${port}`)
 })
